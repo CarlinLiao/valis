@@ -3240,6 +3240,8 @@ class Valis(object):
             # Remove feature points outside of mask
             for img_obj in rigid_registrar.img_obj_dict.values():
                 slide_obj = self.get_slide(img_obj.name)
+                if img_obj.kp_pos_xy is None:
+                    continue
                 features_in_mask_idx = warp_tools.get_xy_inside_mask(xy=img_obj.kp_pos_xy, mask=slide_obj.rigid_reg_mask)
                 if len(features_in_mask_idx) > 0:
                     img_obj.kp_pos_xy = img_obj.kp_pos_xy[features_in_mask_idx, :]
@@ -3378,7 +3380,7 @@ class Valis(object):
                                                         out_shape_rc=out_rc)
 
             img_obj.registered_shape_rc = img_obj.registered_img.shape[0:2]
-
+        rigid_registrar.transformer = transformer
         return rigid_registrar
 
     def rigid_register(self):
