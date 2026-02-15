@@ -1222,6 +1222,14 @@ def warp_img(img, M=None, bk_dxdy=None, out_shape_rc=None,
         warped = affine_warped
 
     if bbox_xywh is not None:
+        # Correct off-by-few due to scaling of bbox
+        rtol = 1e-2  # tight relative tolerance
+        expected_w = bbox_xywh[0] + bbox_xywh[2]
+        expected_h = bbox_xywh[1] + bbox_xywh[3]
+        if (expected_w > warped.width) and np.isclose(warped.width, expected_w, rtol=rtol):
+            bbox_xywh[2] -= int(round(expected_w - warped.width))
+        if (expected_h > warped.height) and np.isclose(warped.height, expected_h, rtol=rtol):
+            bbox_xywh[3] -= int(round(expected_h - warped.height))
         warped = warped.extract_area(*bbox_xywh)
 
     if is_array:
