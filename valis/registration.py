@@ -557,9 +557,13 @@ class Slide(object):
         mask , mask_bbox_xywh = self.val_obj.get_crop_mask(CROP_OVERLAP)
 
         if scaled_warped_img_shape_rc is not None:
-            sxy = np.array([*scaled_warped_img_shape_rc[::-1]]) / np.array([*warped_img_shape_rc[::-1]])
+            sxys = np.array([*scaled_warped_img_shape_rc[::-1]]) / np.array([*warped_img_shape_rc[::-1]])
+            if not np.allclose(sxy[0], sxy[1], rtol=1e-5):
+                msg = f"X and Y scaling factors are not equal: sxy={sxy}. This may result in distorted registration."
+                valtils.print_warning(msg)
+            sxy = np.mean(sxys)
         else:
-            sxy = np.ones(2)
+            sxy = 1
 
         to_slide_transformer = transform.SimilarityTransform(scale=sxy)
         overlap_bbox = warp_tools.bbox2xy(mask_bbox_xywh)
