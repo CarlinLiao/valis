@@ -558,8 +558,8 @@ class Slide(object):
 
         if scaled_warped_img_shape_rc is not None:
             sxys = np.array([*scaled_warped_img_shape_rc[::-1]]) / np.array([*warped_img_shape_rc[::-1]])
-            if not np.allclose(sxy[0], sxy[1], rtol=1e-5):
-                msg = f"X and Y scaling factors are not equal: sxy={sxy}. This may result in distorted registration."
+            if not np.allclose(sxys[0], sxys[1], rtol=1e-5):
+                msg = f"X and Y scaling factors are not equal: {sxys}. This may result in distorted registration."
                 valtils.print_warning(msg)
             sxy = np.mean(sxys)
         else:
