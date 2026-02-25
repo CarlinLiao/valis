@@ -2155,6 +2155,8 @@ class Valis(object):
                                            reference_img_f=reference_img_f,
                                            compose_non_rigid=compose_non_rigid,
                                            qt_emitter=qt_emitter)
+        else:
+            self.non_rigid_reg_kwargs = None
 
         # Info realted to saving images to view results #
         self.mask_dict = None
@@ -4788,7 +4790,8 @@ class Valis(object):
         self.rigid_reg_kwargs[AFFINE_OPTIMIZER_KEY] = None
         self.rigid_reg_kwargs[MATCHER_KEY] = None
         self.rigid_reg_kwargs[MATCHER_FOR_SORTING_KEY] = None
-        self.non_rigid_reg_kwargs[NON_RIGID_REG_CLASS_KEY] = None
+        if self.non_rigid_reg_kwargs is not None:
+            self.non_rigid_reg_kwargs[NON_RIGID_REG_CLASS_KEY] = None
         self.non_rigid_registrar_cls = None
         self.rigid_registrar = None
         self.micro_rigid_registrar_cls = None

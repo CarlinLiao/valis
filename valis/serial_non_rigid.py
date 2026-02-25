@@ -472,7 +472,7 @@ class NonRigidZImage(object):
         else:
             if reg_mask is not None:
                 moving_bk_dxdy = self.mask_dxdy(moving_bk_dxdy, reg_mask)
-                bk_dxdy_from_ref = bk_dxdy + moving_bk_dxdy
+            bk_dxdy_from_ref = bk_dxdy + moving_bk_dxdy
 
         img_bk_dxdy = bk_dxdy_from_ref.copy()
         if reg_mask is not None:
